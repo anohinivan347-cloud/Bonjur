@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InvestConnect — Аналитика</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="dashboard-body">
+  <div class="dashboard-layout">
+    <aside class="sidebar card">
+      <a class="brand" href="index.html">InvestConnect</a>
+      <nav>
+        <a class="nav-glow" href="dashboard.html">Панель мониторинга</a>
+        <a class="nav-glow" href="marketplace.html">Стартапы</a>
+        <a class="nav-glow" href="portfolio.html">Портфолио</a>
+        <a class="active nav-glow" href="analytics.html">Аналитика</a>
+        <a class="nav-glow" href="messages.html">Сообщения</a>
+        <a class="nav-glow" href="settings.html">Настройки</a>
+      </nav>
+    </aside>
+
+    <main class="dashboard-main">
+      <header class="dashboard-top card page-header-row">
+        <div>
+          <h2>Аналитика</h2>
+          <p class="lead">Сравнение ROI, рисков и отраслевых трендов.</p>
+        </div>
+        <button class="btn btn-primary glow-btn" type="button">Обновить данные</button>
+      </header>
+      <section class="kpi-row">
+        <article class="card"><p>Средний ROI</p><h3>26.4%</h3><span>За последние 12 месяцев</span></article>
+        <article class="card"><p>Доля high-risk</p><h3>19%</h3><span>В пределах целевого лимита</span></article>
+        <article class="card"><p>Sharpe ratio</p><h3>1.42</h3><span>Стабильный тренд</span></article>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
