@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InvestConnect — Startup Marketplace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <header class="top-nav marketplace-header">
+      <a class="brand" href="index.html">InvestConnect</a>
+      <nav>
+        <a href="index.html">Главная</a>
+        <a href="dashboard.html">Дашборд</a>
+      </nav>
+      <button class="btn btn-primary">Добавить в избранное</button>
+    </header>
+
+    <section class="market-hero panel">
+      <h1>Marketplace стартапов</h1>
+      <p>Находите сделки по отрасли, риску и потенциалу рентабельности инвестиций.</p>
+    </section>
+
+    <section class="filters panel card">
+      <div>
+        <label>Отрасль</label>
+        <select>
+          <option>Все отрасли</option>
+          <option>Fintech</option>
+          <option>HealthTech</option>
+          <option>AI/SaaS</option>
+          <option>CleanTech</option>
+        </select>
+      </div>
+      <div>
+        <label>Уровень риска</label>
+        <select>
+          <option>Любой</option>
+          <option>Низкий</option>
+          <option>Средний</option>
+          <option>Высокий</option>
+        </select>
+      </div>
+      <div>
+        <label>Стадия финансирования</label>
+        <select>
+          <option>Любая</option>
+          <option>Pre-Seed</option>
+          <option>Seed</option>
+          <option>Series A</option>
+          <option>Series B</option>
+        </select>
+      </div>
+      <div>
+        <label>Диапазон ROI</label>
+        <select>
+          <option>Любой</option>
+          <option>До 15%</option>
+          <option>15–30%</option>
+          <option>30%+</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="startup-grid market-grid">
+      <article class="startup-card card">
+        <h3>NeuroPay</h3>
+        <p><strong>Отрасль:</strong> Fintech</p>
+        <p><strong>Стадия:</strong> Series A</p>
+        <p><strong>Потенц. ROI:</strong> 29%</p>
+        <p><strong>Риск:</strong> <span class="risk risk-mid">Средний</span></p>
+        <p>Платежная инфраструктура для трансграничных B2B-расчетов с AI-антифродом.</p>
+        <button class="btn btn-primary">Инвестировать</button>
+      </article>
+
+      <article class="startup-card card">
+        <h3>MediTrack</h3>
+        <p><strong>Отрасль:</strong> HealthTech</p>
+        <p><strong>Стадия:</strong> Pre-Series A</p>
+        <p><strong>Потенц. ROI:</strong> 24%</p>
+        <p><strong>Риск:</strong> <span class="risk risk-low">Низкий</span></p>
+        <p>SaaS-платформа телемедицинской аналитики и предиктивной диагностики.</p>
+        <button class="btn btn-primary">Инвестировать</button>
+      </article>
+
+      <article class="startup-card card">
+        <h3>GreenFlow AI</h3>
+        <p><strong>Отрасль:</strong> CleanTech</p>
+        <p><strong>Стадия:</strong> Seed</p>
+        <p><strong>Потенц. ROI:</strong> 41%</p>
+        <p><strong>Риск:</strong> <span class="risk risk-high">Высокий</span></p>
+        <p>Оптимизация энергосетей на базе ML для промышленных объектов и девелоперов.</p>
+        <button class="btn btn-primary">Инвестировать</button>
+      </article>
+
+      <article class="startup-card card">
+        <h3>LedgerFlow</h3>
+        <p><strong>Отрасль:</strong> AI/SaaS</p>
+        <p><strong>Стадия:</strong> Pre-Seed</p>
+        <p><strong>Потенц. ROI:</strong> 18%</p>
+        <p><strong>Риск:</strong> <span class="risk risk-low">Низкий</span></p>
+        <p>Автоматизация финансового комплаенса и отчетности для SMB-компаний.</p>
+        <button class="btn btn-primary">Инвестировать</button>
+      </article>
+
+      <article class="startup-card card">
+        <h3>AeroChain</h3>
+        <p><strong>Отрасль:</strong> Logistics</p>
+        <p><strong>Стадия:</strong> Series B</p>
+        <p><strong>Потенц. ROI:</strong> 22%</p>
+        <p><strong>Риск:</strong> <span class="risk risk-mid">Средний</span></p>
+        <p>Платформа для цифровизации цепочек поставок с трекингом в реальном времени.</p>
+        <button class="btn btn-primary">Инвестировать</button>
+      </article>
+
+      <article class="startup-card card">
+        <h3>VisionGrid</h3>
+        <p><strong>Отрасль:</strong> AI/SaaS</p>
+        <p><strong>Стадия:</strong> Seed</p>
+        <p><strong>Потенц. ROI:</strong> 35%</p>
+        <p><strong>Риск:</strong> <span class="risk risk-high">Высокий</span></p>
+        <p>Компьютерное зрение для производственных линий и контроля качества продукции.</p>
+        <button class="btn btn-primary">Инвестировать</button>
+      </article>
+    </section>
+  </div>
+</body>
+</html>

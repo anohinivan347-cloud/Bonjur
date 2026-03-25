@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InvestConnect — Панель инвестора</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="dashboard-body">
+  <div class="dashboard-layout">
+    <aside class="sidebar card">
+      <a class="brand" href="index.html">InvestConnect</a>
+      <nav>
+        <a class="active" href="#">Панель мониторинга</a>
+        <a href="marketplace.html">Стартапы</a>
+        <a href="#">Портфолио</a>
+        <a href="#">Аналитика</a>
+        <a href="#">Сообщения</a>
+        <a href="#">Настройки</a>
+      </nav>
+    </aside>
+
+    <main class="dashboard-main">
+      <header class="dashboard-top card">
+        <label class="search-wrap">
+          <span>🔎</span>
+          <input type="search" placeholder="Поиск стартапов, сделок или отчетов" />
+        </label>
+        <div class="top-actions">
+          <button class="icon-btn">🔔</button>
+          <button class="icon-btn">✉️</button>
+          <div class="profile-pill">АК · Investor Pro</div>
+        </div>
+      </header>
+
+      <section class="kpi-row">
+        <article class="card"><p>Общий объем инвестиций</p><h3>₽82.6 млн</h3><span>+12.4% за квартал</span></article>
+        <article class="card"><p>Рентабельность (ROI)</p><h3>27.9%</h3><span>Выше бенчмарка на 6.1%</span></article>
+        <article class="card"><p>Активные сделки</p><h3>18</h3><span>5 в стадии due diligence</span></article>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="card">
+          <h3>Рост портфеля</h3>
+          <div class="line-chart chart-large"></div>
+        </article>
+
+        <article class="card">
+          <h3>Диверсификация</h3>
+          <div class="mini-bars">
+            <div><span>Fintech</span><progress max="100" value="31"></progress></div>
+            <div><span>HealthTech</span><progress max="100" value="22"></progress></div>
+            <div><span>AI/SaaS</span><progress max="100" value="27"></progress></div>
+            <div><span>CleanTech</span><progress max="100" value="20"></progress></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Рекомендованные стартапы (ИИ)</h3>
+          <ul class="stack-list">
+            <li><strong>QuantEdge</strong><span>Series A · ROI 32% · Риск: Средний</span></li>
+            <li><strong>BioSignal Cloud</strong><span>Seed · ROI 38% · Риск: Высокий</span></li>
+            <li><strong>LedgerFlow</strong><span>Pre-Seed · ROI 24% · Риск: Низкий</span></li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Активные инвестиции</h3>
+          <table>
+            <thead><tr><th>Стартап</th><th>Стадия</th><th>Вложено</th><th>Доходность</th></tr></thead>
+            <tbody>
+              <tr><td>NeuroPay</td><td>Series A</td><td>₽6.2 млн</td><td class="pos">+29%</td></tr>
+              <tr><td>MediTrack</td><td>Pre-Series A</td><td>₽4.8 млн</td><td class="pos">+18%</td></tr>
+              <tr><td>GreenFlow AI</td><td>Seed</td><td>₽3.1 млн</td><td class="neg">-4%</td></tr>
+            </tbody>
+          </table>
+        </article>
+
+        <article class="card">
+          <h3>Распределение рисков</h3>
+          <div class="risk-grid">
+            <div><p>Низкий</p><strong>34%</strong></div>
+            <div><p>Средний</p><strong>47%</strong></div>
+            <div><p>Высокий</p><strong>19%</strong></div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
