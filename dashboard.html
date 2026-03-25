@@ -14,12 +14,12 @@
     <aside class="sidebar card">
       <a class="brand" href="index.html">InvestConnect</a>
       <nav>
-        <a class="active" href="#">Панель мониторинга</a>
-        <a href="marketplace.html">Стартапы</a>
-        <a href="#">Портфолио</a>
-        <a href="#">Аналитика</a>
-        <a href="#">Сообщения</a>
-        <a href="#">Настройки</a>
+        <a class="active nav-glow" href="dashboard.html">Панель мониторинга</a>
+        <a class="nav-glow" href="marketplace.html">Стартапы</a>
+        <a class="nav-glow" href="portfolio.html">Портфолио</a>
+        <a class="nav-glow" href="analytics.html">Аналитика</a>
+        <a class="nav-glow" href="messages.html">Сообщения</a>
+        <a class="nav-glow" href="settings.html">Настройки</a>
       </nav>
     </aside>
 
@@ -30,8 +30,8 @@
           <input type="search" placeholder="Поиск стартапов, сделок или отчетов" />
         </label>
         <div class="top-actions">
-          <button class="icon-btn">🔔</button>
-          <button class="icon-btn">✉️</button>
+          <button class="icon-btn glow-btn" type="button" data-toggle-btn aria-pressed="false">🔔</button>
+          <button class="icon-btn glow-btn" type="button" data-toggle-btn aria-pressed="false">✉️</button>
           <div class="profile-pill">АК · Investor Pro</div>
         </div>
       </header>
@@ -90,5 +90,14 @@
       </section>
     </main>
   </div>
+
+  <script>
+    document.querySelectorAll('[data-toggle-btn]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const isPressed = button.getAttribute('aria-pressed') === 'true';
+        button.setAttribute('aria-pressed', String(!isPressed));
+      });
+    });
+  </script>
 </body>
 </html>
