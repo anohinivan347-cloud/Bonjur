@@ -404,3 +404,27 @@ table { width: 100%; border-collapse: collapse; }
   .kpi-row { grid-template-columns: 1fr; }
   .footer { grid-template-columns: 1fr; }
 }
+
+
+.app-toast {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  max-width: 360px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(8, 15, 31, 0.95);
+  color: var(--text);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 999;
+}
+
+.app-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}

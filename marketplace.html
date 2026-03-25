@@ -17,7 +17,7 @@
         <a href="index.html">Главная</a>
         <a href="dashboard.html">Дашборд</a>
       </nav>
-      <button class="btn btn-primary">Добавить в избранное</button>
+      <button class="btn btn-primary" data-action="favorite-page">Добавить в избранное</button>
     </header>
 
     <section class="market-hero panel">
@@ -74,7 +74,7 @@
         <p><strong>Потенц. ROI:</strong> 29%</p>
         <p><strong>Риск:</strong> <span class="risk risk-mid">Средний</span></p>
         <p>Платежная инфраструктура для трансграничных B2B-расчетов с AI-антифродом.</p>
-        <button class="btn btn-primary">Инвестировать</button>
+        <button class="btn btn-primary" data-action="invest" data-startup="NeuroPay">Инвестировать</button>
       </article>
 
       <article class="startup-card card">
@@ -84,7 +84,7 @@
         <p><strong>Потенц. ROI:</strong> 24%</p>
         <p><strong>Риск:</strong> <span class="risk risk-low">Низкий</span></p>
         <p>SaaS-платформа телемедицинской аналитики и предиктивной диагностики.</p>
-        <button class="btn btn-primary">Инвестировать</button>
+        <button class="btn btn-primary" data-action="invest" data-startup="MediTrack">Инвестировать</button>
       </article>
 
       <article class="startup-card card">
@@ -94,7 +94,7 @@
         <p><strong>Потенц. ROI:</strong> 41%</p>
         <p><strong>Риск:</strong> <span class="risk risk-high">Высокий</span></p>
         <p>Оптимизация энергосетей на базе ML для промышленных объектов и девелоперов.</p>
-        <button class="btn btn-primary">Инвестировать</button>
+        <button class="btn btn-primary" data-action="invest" data-startup="GreenFlow AI">Инвестировать</button>
       </article>
 
       <article class="startup-card card">
@@ -104,7 +104,7 @@
         <p><strong>Потенц. ROI:</strong> 18%</p>
         <p><strong>Риск:</strong> <span class="risk risk-low">Низкий</span></p>
         <p>Автоматизация финансового комплаенса и отчетности для SMB-компаний.</p>
-        <button class="btn btn-primary">Инвестировать</button>
+        <button class="btn btn-primary" data-action="invest" data-startup="LedgerFlow">Инвестировать</button>
       </article>
 
       <article class="startup-card card">
@@ -114,7 +114,7 @@
         <p><strong>Потенц. ROI:</strong> 22%</p>
         <p><strong>Риск:</strong> <span class="risk risk-mid">Средний</span></p>
         <p>Платформа для цифровизации цепочек поставок с трекингом в реальном времени.</p>
-        <button class="btn btn-primary">Инвестировать</button>
+        <button class="btn btn-primary" data-action="invest" data-startup="AeroChain">Инвестировать</button>
       </article>
 
       <article class="startup-card card">
@@ -124,9 +124,11 @@
         <p><strong>Потенц. ROI:</strong> 35%</p>
         <p><strong>Риск:</strong> <span class="risk risk-high">Высокий</span></p>
         <p>Компьютерное зрение для производственных линий и контроля качества продукции.</p>
-        <button class="btn btn-primary">Инвестировать</button>
+        <button class="btn btn-primary" data-action="invest" data-startup="VisionGrid">Инвестировать</button>
       </article>
     </section>
   </div>
+  <div id="app-toast" class="app-toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
 </body>
 </html>

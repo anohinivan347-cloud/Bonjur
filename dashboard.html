@@ -30,8 +30,8 @@
           <input type="search" placeholder="Поиск стартапов, сделок или отчетов" />
         </label>
         <div class="top-actions">
-          <button class="icon-btn">🔔</button>
-          <button class="icon-btn">✉️</button>
+          <button class="icon-btn" data-action="open-notifications" aria-label="Уведомления">🔔</button>
+          <button class="icon-btn" data-action="open-messages" aria-label="Сообщения">✉️</button>
           <div class="profile-pill">АК · Investor Pro</div>
         </div>
       </header>
@@ -90,5 +90,7 @@
       </section>
     </main>
   </div>
+  <div id="app-toast" class="app-toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
 </body>
 </html>

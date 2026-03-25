@@ -22,7 +22,7 @@
       <a href="dashboard.html">Дашборд</a>
       <a href="marketplace.html">Стартапы</a>
     </nav>
-    <button class="btn btn-ghost">Войти</button>
+    <button class="btn btn-ghost" data-action="login">Войти</button>
   </header>
 
   <main class="shell">
@@ -32,8 +32,8 @@
         <h1>Инвестируйте в стартапы с аналитикой ИИ и прозрачным риском</h1>
         <p class="lead">InvestConnect объединяет частных инвесторов, фонды и основателей на одной платформе: от поиска сделок до мониторинга ROI в реальном времени.</p>
         <div class="hero-actions">
-          <button class="btn btn-primary">Начать инвестировать</button>
-          <button class="btn btn-ghost">Запросить демо</button>
+          <button class="btn btn-primary" data-action="start-investing">Начать инвестировать</button>
+          <button class="btn btn-ghost" data-action="request-demo">Запросить демо</button>
         </div>
         <div class="hero-metrics">
           <article>
@@ -206,7 +206,7 @@
     <section class="panel cta-final">
       <h2>Откройте доступ к лучшим стартап-сделкам уже сегодня</h2>
       <p>Запустите инвестиционный процесс за 15 минут и получите персонализированную подборку проектов.</p>
-      <button class="btn btn-primary">Начать инвестировать</button>
+      <button class="btn btn-primary" data-action="start-investing">Начать инвестировать</button>
     </section>
   </main>
 
@@ -226,5 +226,7 @@
       <a href="#">Контакты</a>
     </div>
   </footer>
+  <div id="app-toast" class="app-toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
 </body>
 </html>
