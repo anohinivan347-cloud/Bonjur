@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Пример JavaScript c alert()</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Times New Roman", serif;
+      background: #f2f2f2;
+      color: #1a1a1a;
+      line-height: 1.35;
+    }
+
+    .page {
+      max-width: 900px;
+      margin: 24px auto;
+      background: #fff;
+      padding: 28px 40px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-size: 36px;
+      font-weight: 700;
+      text-align: center;
+      color: #9d2b12;
+    }
+
+    .lead {
+      margin: 0 0 16px;
+      font-size: 28px;
+      text-align: center;
+    }
+
+    .example-title {
+      margin: 0 0 14px;
+      font-size: 34px;
+      font-style: italic;
+    }
+
+    .demo {
+      margin: 12px auto 18px;
+      padding: 22px;
+      border: 2px solid #d7b56a;
+      border-radius: 8px;
+      background: linear-gradient(140deg, #f6e7cf, #fef8ed 65%, #f5d1a7);
+      font-size: 30px;
+      text-align: center;
+    }
+
+    .demo a {
+      color: #113a9a;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
+    figcaption {
+      margin: 8px 0 20px;
+      text-align: center;
+      font-size: 30px;
+    }
+
+    p {
+      font-size: 34px;
+      margin: 0 0 14px;
+      text-align: justify;
+    }
+
+    @media (max-width: 900px) {
+      .page {
+        padding: 18px;
+      }
+
+      h1,
+      .lead,
+      .example-title,
+      figcaption,
+      p,
+      .demo {
+        font-size: clamp(18px, 3.8vw, 30px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <p class="lead"><strong>Задания для самостоятельного выполнения:</strong> Используя ранее рассмотренные элементы, создайте документ, как изображено на рисунке 6.</p>
+
+    <p class="example-title">Пример 1. Программа выдачи простого предупреждения при выборе гипертекстовой ссылки.</p>
+
+    <h1>Пример JavaScript c использованием метода alert()</h1>
+
+    <figure>
+      <div class="demo">
+        В текст этого документа внедрена гипертекстовая ссылка:
+        <a href="#" onclick="alert('Это мое предупреждение!'); return false;">"Нажмите сюда"</a>.
+        Любопытно, проверим ссылку?
+      </div>
+      <figcaption>Рисунок 6. Результат выполнения программы с использованием JavaScript.</figcaption>
+    </figure>
+
+    <p>В данном примере среди текста документа расположена гипертекстовая ссылка "Нажмите сюда". Если ее выбрать при просмотре, то на экране появится окно-предупреждение с вопросом: "Это мое предупреждение!".</p>
+
+    <p>Генерация этого окна осуществляется специальным методом <code>window.alert</code>, который выполняется при выборе гипертекстовой ссылки. В качестве URL можно использовать схему JavaScript — расширение спецификации URI для программирования сценариев просмотра гипертекстовых документов World Wide Web.</p>
+
+    <p>Добиться такого же эффекта можно и другим способом, прибегая к новой схеме URL. Для этой цели можно использовать событие, которое генерируется программой-навигатором при выборе гипертекстовой ссылки — Click.</p>
+  </main>
+</body>
+</html>
