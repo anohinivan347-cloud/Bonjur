@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Задания с prompt()</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.5;
+      margin: 24px;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 12px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>Выполнение трёх заданий</h1>
+  <p>Откройте консоль/окна браузера: программа использует <code>prompt()</code> и <code>alert()</code>.</p>
+  <pre id="output"></pre>
+
+  <script>
+    const output = document.getElementById('output');
+    const lines = [];
+
+    // Пример 1
+    const weekDays = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+    const firstRow = `${weekDays[0]}\t${weekDays[1]}\t${weekDays[2]}\t${weekDays[3]}`;
+    const secondRow = `${weekDays[4]}\t${weekDays[5]}\t${weekDays[6]}`;
+
+    lines.push('Пример 1. Дни недели в 2 строки с табуляцией:');
+    lines.push(firstRow);
+    lines.push(secondRow);
+    lines.push('');
+
+    // Пример 2
+    const firstNumber = Number(prompt('Пример 2. Введите первое число для вычитания:'));
+    const secondNumber = Number(prompt('Пример 2. Введите второе число для вычитания:'));
+
+    const subtraction = firstNumber - secondNumber;
+    const opposite = -subtraction;
+
+    alert(`Результат вычитания: ${subtraction}\nПротивоположное число: ${opposite}`);
+
+    lines.push('Пример 2. Вычитание:');
+    lines.push(`Первое число: ${firstNumber}`);
+    lines.push(`Второе число: ${secondNumber}`);
+    lines.push(`Результат вычитания: ${subtraction}`);
+    lines.push(`Противоположное результату число: ${opposite}`);
+    lines.push('');
+
+    // Пример 3
+    const fullCost = Number(prompt('Пример 3. Введите полную стоимость:'));
+    const taxRate = Number(prompt('Пример 3. Введите ставку налога (например, 0.1 для 10%):'));
+    const cost = fullCost - fullCost * taxRate;
+
+    alert(`Стоимость = полная_стоимость – полная_стоимость * ставка_налога\n${cost} = ${fullCost} – ${fullCost} * ${taxRate}`);
+
+    lines.push('Пример 3. Расчёт стоимости:');
+    lines.push(`Стоимость = полная_стоимость – полная_стоимость * ставка_налога`);
+    lines.push(`${cost} = ${fullCost} – ${fullCost} * ${taxRate}`);
+
+    output.textContent = lines.join('\n');
+    console.log(lines.join('\n'));
+  </script>
+</body>
+</html>
