@@ -1,0 +1,1004 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HR Portal</title>
+  <style>
+    :root {
+      --bg: #f3f6fb;
+      --card: #ffffff;
+      --primary: #316cf4;
+      --primary-dark: #1f52c2;
+      --text: #1d2433;
+      --muted: #6b7280;
+      --danger: #d92d20;
+      --success: #16a34a;
+      --border: #e5e7eb;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    .container { width: min(1200px, 94%); margin: 0 auto; }
+    .hidden { display: none !important; }
+
+    .auth-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .auth-card {
+      width: min(760px, 100%);
+      background: var(--card);
+      border-radius: 16px;
+      box-shadow: 0 12px 28px rgba(0,0,0,.08);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .auth-info { background: linear-gradient(135deg, #2f65f0, #6ea4ff); color: #fff; padding: 28px; }
+    .auth-info h2 { margin-top: 0; }
+    .auth-pane { padding: 24px; }
+
+    h1,h2,h3 { margin: 0 0 12px; }
+    p { margin: 0 0 12px; color: var(--muted); }
+
+    .form-group { margin-bottom: 12px; }
+    label { display: block; margin-bottom: 6px; font-size: 14px; color: #374151; }
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      background: #fff;
+    }
+    textarea { min-height: 90px; resize: vertical; }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      background: var(--primary);
+      color: #fff;
+      padding: 10px 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:hover { background: var(--primary-dark); }
+    .btn-outline { background: #fff; color: var(--primary); border: 1px solid var(--primary); }
+    .btn-danger { background: var(--danger); }
+    .btn-success { background: var(--success); }
+
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+    .tab-btn { background: #fff; color: var(--text); border: 1px solid var(--border); }
+    .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    .dashboard { min-height: 100vh; padding: 18px 0 28px; }
+    .topbar {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+
+    .grid { display: grid; gap: 12px; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 14px;
+      border: 1px solid var(--border);
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 10px; border-bottom: 1px solid var(--border); font-size: 14px; }
+    th { font-size: 13px; color: #374151; }
+
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 10;
+    }
+    .modal.open { display: flex; }
+    .modal-box {
+      width: min(760px, 100%);
+      max-height: 92vh;
+      overflow: auto;
+      background: #fff;
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .muted { color: var(--muted); font-size: 13px; }
+    .status-pill {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: #eef2ff;
+      color: #3730a3;
+    }
+
+    .question-item { border: 1px dashed var(--border); border-radius: 10px; padding: 10px; margin-bottom: 8px; }
+
+    @media (max-width: 900px) {
+      .auth-card { grid-template-columns: 1fr; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <section id="authSection" class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-info">
+        <h2>Портал HR / Кандидата / Сотрудника</h2>
+        <p>Демо-система без бэкенда на localStorage.</p>
+        <ul>
+          <li>HR: вакансии, резюме, тесты, статистика, сотрудники</li>
+          <li>Кандидат: резюме, назначенные тесты, курсы</li>
+          <li>Сотрудник: кабинет, тесты повышения, результаты</li>
+        </ul>
+        <p><strong>HR по умолчанию:</strong> hr@company.com / 123</p>
+      </div>
+      <div class="auth-pane">
+        <h3>Вход</h3>
+        <form id="loginForm">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="loginEmail" required />
+          </div>
+          <div class="form-group">
+            <label>Пароль</label>
+            <input type="password" id="loginPassword" required />
+          </div>
+          <button type="submit">Войти</button>
+        </form>
+
+        <hr />
+
+        <h3>Регистрация</h3>
+        <form id="registerForm">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="regEmail" required />
+          </div>
+          <div class="form-group">
+            <label>Пароль</label>
+            <input type="password" id="regPassword" required minlength="3" />
+          </div>
+          <div class="form-group">
+            <label>Роль</label>
+            <select id="regRole" required>
+              <option value="candidate">Кандидат</option>
+              <option value="employee">Сотрудник</option>
+            </select>
+          </div>
+          <button type="submit">Зарегистрироваться</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="dashboardSection" class="dashboard hidden">
+    <div class="container">
+      <div class="topbar">
+        <div>
+          <h2 id="welcomeTitle"></h2>
+          <p id="welcomeSub"></p>
+        </div>
+        <button id="logoutBtn" class="btn-danger">Выход</button>
+      </div>
+
+      <div id="tabsContainer" class="tabs"></div>
+      <div id="tabContent"></div>
+    </div>
+  </section>
+
+  <div class="modal" id="mainModal">
+    <div class="modal-box">
+      <div class="actions" style="justify-content: space-between;">
+        <h3 id="modalTitle">Модальное окно</h3>
+        <button class="btn-outline" onclick="closeModal()">Закрыть</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    const KEYS = {
+      users: 'users',
+      candidates: 'candidates',
+      employees: 'employees',
+      vacancies: 'vacancies',
+      tests: 'tests',
+      testResults: 'testResults',
+      currentUser: 'currentUser'
+    };
+
+    const CANDIDATE_STATUSES = ['Не принят', 'В рассмотрении', 'Отправлен на собеседование', 'Проходит обучение', 'Принят на работу'];
+
+    const state = { activeTab: 0 };
+
+    const uid = () => Date.now() + Math.floor(Math.random() * 10000);
+    const getData = (key) => JSON.parse(localStorage.getItem(key) || '[]');
+    const setData = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+    const getCurrentUser = () => JSON.parse(localStorage.getItem(KEYS.currentUser) || 'null');
+    const setCurrentUser = (u) => localStorage.setItem(KEYS.currentUser, JSON.stringify(u));
+    const formatDate = (d) => new Date(d).toLocaleDateString('ru-RU');
+    const escapeHtml = (s = '') => s.replace(/[&<>'"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;' }[c]));
+
+    function initData() {
+      if (!localStorage.getItem(KEYS.users)) {
+        const hrUser = { id: uid(), email: 'hr@company.com', password: '123', role: 'hr' };
+        const candUser = { id: uid(), email: 'candidate@demo.com', password: '123', role: 'candidate' };
+        const empUser = { id: uid(), email: 'employee@demo.com', password: '123', role: 'employee' };
+        setData(KEYS.users, [hrUser, candUser, empUser]);
+
+        setData(KEYS.candidates, [{
+          id: uid(), userId: candUser.id, fullName: 'Иван Иванов', contacts: 'candidate@demo.com, +7 999 111-22-33', desiredPosition: 'Frontend Developer',
+          experience: '1 год стажировки', education: 'Бакалавр ИТ', skills: 'HTML, CSS, JS', status: 'В рассмотрении', assignedTests: []
+        }]);
+
+        setData(KEYS.employees, [{ id: uid(), userId: empUser.id, fullName: 'Петр Петров', position: 'QA Engineer', hireDate: new Date().toISOString() }]);
+
+        setData(KEYS.vacancies, [
+          { id: uid(), title: 'Frontend Developer', description: 'Разработка интерфейсов', requirements: 'JS, CSS, React', salary: '150000', createdAt: new Date().toISOString() },
+          { id: uid(), title: 'HR Manager', description: 'Подбор кандидатов', requirements: 'Коммуникабельность', salary: '120000', createdAt: new Date().toISOString() }
+        ]);
+
+        setData(KEYS.tests, [
+          {
+            id: uid(), title: 'Базовый JS', description: 'Проверка JS для кандидатов', category: 'candidate',
+            questions: [
+              { text: 'Что такое let?', type: 'single', options: ['Ключевое слово объявления переменной', 'Функция', 'Цикл'], correct: 'Ключевое слово объявления переменной' },
+              { text: 'Какие типы данных есть в JS?', type: 'multi', options: ['string', 'number', 'banana'], correct: ['string', 'number'] },
+              { text: 'Ключевое слово для объявления константы?', type: 'text', keyword: 'const' }
+            ]
+          },
+          {
+            id: uid(), title: 'Тест по коммуникации', description: 'Для сотрудников', category: 'employee',
+            questions: [{ text: 'Что важно в командной работе?', type: 'text', keyword: 'коммуника' }]
+          }
+        ]);
+
+        setData(KEYS.testResults, []);
+      }
+    }
+
+    function openModal(title, html) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalBody').innerHTML = html;
+      document.getElementById('mainModal').classList.add('open');
+    }
+    function closeModal() { document.getElementById('mainModal').classList.remove('open'); }
+    window.closeModal = closeModal;
+
+    function login(email, password) {
+      const user = getData(KEYS.users).find(u => u.email === email && u.password === password);
+      if (!user) return alert('Неверные email/пароль');
+      setCurrentUser(user);
+      state.activeTab = 0;
+      renderApp();
+    }
+
+    function register(email, password, role) {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return alert('Некорректный email');
+      const users = getData(KEYS.users);
+      if (users.some(u => u.email === email)) return alert('Пользователь уже существует');
+      const newUser = { id: uid(), email, password, role };
+      users.push(newUser);
+      setData(KEYS.users, users);
+
+      if (role === 'candidate') {
+        const candidates = getData(KEYS.candidates);
+        candidates.push({ id: uid(), userId: newUser.id, fullName: '', contacts: '', desiredPosition: '', experience: '', education: '', skills: '', status: 'Не принят', assignedTests: [] });
+        setData(KEYS.candidates, candidates);
+      }
+      if (role === 'employee') {
+        const employees = getData(KEYS.employees);
+        employees.push({ id: uid(), userId: newUser.id, fullName: '', position: 'Не указана', hireDate: new Date().toISOString() });
+        setData(KEYS.employees, employees);
+      }
+
+      alert('Регистрация успешна, теперь выполните вход');
+      document.getElementById('registerForm').reset();
+    }
+
+    function logout() {
+      localStorage.removeItem(KEYS.currentUser);
+      renderApp();
+    }
+
+    function getTabsByRole(role) {
+      if (role === 'hr') return ['Вакансии', 'Резюме', 'Статистика', 'Тесты', 'Сотрудники', 'Настройки'];
+      if (role === 'candidate') return ['Моё резюме', 'Тестирование', 'О компании', 'Курсы'];
+      return ['Личный кабинет', 'Тесты', 'Результаты'];
+    }
+
+    function renderApp() {
+      const user = getCurrentUser();
+      const auth = document.getElementById('authSection');
+      const dash = document.getElementById('dashboardSection');
+      if (!user) {
+        auth.classList.remove('hidden');
+        dash.classList.add('hidden');
+        return;
+      }
+
+      auth.classList.add('hidden');
+      dash.classList.remove('hidden');
+
+      document.getElementById('welcomeTitle').textContent = `Пользователь: ${user.email}`;
+      document.getElementById('welcomeSub').textContent = `Роль: ${user.role}`;
+
+      const tabs = getTabsByRole(user.role);
+      const tabsContainer = document.getElementById('tabsContainer');
+      tabsContainer.innerHTML = tabs.map((t, i) => `<button class="tab-btn ${i===state.activeTab?'active':''}" onclick="switchTab(${i})">${t}</button>`).join('');
+
+      renderTab(user.role, state.activeTab);
+    }
+
+    function switchTab(idx) { state.activeTab = idx; renderApp(); }
+    window.switchTab = switchTab;
+
+    function renderTab(role, tabIndex) {
+      const container = document.getElementById('tabContent');
+      if (role === 'hr') return renderHrTab(container, tabIndex);
+      if (role === 'candidate') return renderCandidateTab(container, tabIndex);
+      return renderEmployeeTab(container, tabIndex);
+    }
+
+    function renderHrTab(container, idx) {
+      switch (idx) {
+        case 0: return renderHrVacancies(container);
+        case 1: return renderHrResumes(container);
+        case 2: return renderHrStats(container);
+        case 3: return renderHrTests(container);
+        case 4: return renderHrEmployees(container);
+        default: return renderHrSettings(container);
+      }
+    }
+
+    function renderHrVacancies(container) {
+      const vacancies = getData(KEYS.vacancies);
+      container.innerHTML = `
+        <div class="card">
+          <div class="actions" style="justify-content: space-between; align-items: center;">
+            <h3>Вакансии</h3>
+            <button onclick="showVacancyModal()">Создать вакансию</button>
+          </div>
+          <div class="grid">
+            ${vacancies.map(v => `
+              <div class="card">
+                <h4>${escapeHtml(v.title)}</h4>
+                <p>${escapeHtml(v.description)}</p>
+                <p class="muted">Требования: ${escapeHtml(v.requirements)} | Зарплата: ${escapeHtml(v.salary)} | ${formatDate(v.createdAt)}</p>
+                <div class="actions">
+                  <button class="btn-outline" onclick="showVacancyModal(${v.id})">Редактировать</button>
+                  <button class="btn-danger" onclick="deleteVacancy(${v.id})">Удалить</button>
+                  <button class="btn-success" onclick="alert('Имитация публикации на hh.ru')">Опубликовать на hh.ru</button>
+                </div>
+              </div>
+            `).join('') || '<p>Нет вакансий</p>'}
+          </div>
+        </div>
+      `;
+    }
+
+    function showVacancyModal(id) {
+      const vacancies = getData(KEYS.vacancies);
+      const v = vacancies.find(x => x.id === id) || { title:'', description:'', requirements:'', salary:'' };
+      openModal(id ? 'Редактирование вакансии' : 'Создание вакансии', `
+        <form onsubmit="saveVacancy(event, ${id || 'null'})">
+          <div class="form-group"><label>Название</label><input name="title" value="${escapeHtml(v.title)}" required /></div>
+          <div class="form-group"><label>Описание</label><textarea name="description" required>${escapeHtml(v.description)}</textarea></div>
+          <div class="form-group"><label>Требования</label><textarea name="requirements" required>${escapeHtml(v.requirements)}</textarea></div>
+          <div class="form-group"><label>Зарплата</label><input name="salary" value="${escapeHtml(v.salary)}" required /></div>
+          <button type="submit">Сохранить</button>
+        </form>
+      `);
+    }
+    window.showVacancyModal = showVacancyModal;
+
+    function saveVacancy(e, id) {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const data = Object.fromEntries(fd.entries());
+      if (Object.values(data).some(v => !String(v).trim())) return alert('Заполните все поля');
+      const vacancies = getData(KEYS.vacancies);
+      if (id) {
+        const i = vacancies.findIndex(v => v.id === id);
+        vacancies[i] = { ...vacancies[i], ...data };
+      } else {
+        vacancies.push({ id: uid(), ...data, createdAt: new Date().toISOString() });
+      }
+      setData(KEYS.vacancies, vacancies);
+      closeModal(); renderApp();
+    }
+    window.saveVacancy = saveVacancy;
+
+    function deleteVacancy(id) {
+      if (!confirm('Удалить вакансию?')) return;
+      setData(KEYS.vacancies, getData(KEYS.vacancies).filter(v => v.id !== id));
+      renderApp();
+    }
+    window.deleteVacancy = deleteVacancy;
+
+    function renderHrResumes(container) {
+      const candidates = getData(KEYS.candidates).filter(c => c.status !== 'Принят на работу' && c.fullName);
+      container.innerHTML = `
+        <div class="card">
+          <h3>Резюме кандидатов</h3>
+          <table>
+            <thead><tr><th>ФИО</th><th>Желаемая должность</th><th>Статус</th><th>Действие</th></tr></thead>
+            <tbody>
+              ${candidates.map(c => `
+                <tr>
+                  <td>${escapeHtml(c.fullName)}</td>
+                  <td>${escapeHtml(c.desiredPosition || '-')}</td>
+                  <td><span class="status-pill">${escapeHtml(c.status)}</span></td>
+                  <td><button class="btn-outline" onclick="openCandidateResume(${c.id})">Открыть</button></td>
+                </tr>
+              `).join('') || '<tr><td colspan="4">Нет резюме</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function openCandidateResume(candidateId) {
+      const c = getData(KEYS.candidates).find(x => x.id === candidateId);
+      const tests = getData(KEYS.tests).filter(t => t.category === 'candidate');
+      openModal(`Резюме: ${c.fullName}`, `
+        <p><strong>Контакты:</strong> ${escapeHtml(c.contacts)}</p>
+        <p><strong>Желаемая должность:</strong> ${escapeHtml(c.desiredPosition || '-')}</p>
+        <p><strong>Опыт:</strong> ${escapeHtml(c.experience)}</p>
+        <p><strong>Образование:</strong> ${escapeHtml(c.education)}</p>
+        <p><strong>Навыки:</strong> ${escapeHtml(c.skills)}</p>
+
+        <form onsubmit="updateCandidateStatus(event, ${c.id})">
+          <div class="form-group">
+            <label>Статус</label>
+            <select name="status" onchange="toggleAssignTests(this.value)">
+              ${CANDIDATE_STATUSES.map(s => `<option ${s===c.status?'selected':''}>${s}</option>`).join('')}
+            </select>
+          </div>
+          <div id="assignTestsBox" class="form-group ${c.status==='Проходит обучение'?'':'hidden'}">
+            <label>Назначить тесты</label>
+            <select name="assignedTests" multiple size="5">
+              ${tests.map(t => `<option value="${t.id}" ${c.assignedTests?.includes(t.id)?'selected':''}>${escapeHtml(t.title)}</option>`).join('')}
+            </select>
+            <p class="muted">Зажмите Ctrl/Cmd для множественного выбора</p>
+          </div>
+          <button type="submit">Сохранить</button>
+        </form>
+      `);
+    }
+    window.openCandidateResume = openCandidateResume;
+
+    function toggleAssignTests(status) {
+      const box = document.getElementById('assignTestsBox');
+      if (!box) return;
+      box.classList.toggle('hidden', status !== 'Проходит обучение');
+    }
+    window.toggleAssignTests = toggleAssignTests;
+
+    function updateCandidateStatus(e, candidateId) {
+      e.preventDefault();
+      const candidates = getData(KEYS.candidates);
+      const users = getData(KEYS.users);
+      const employees = getData(KEYS.employees);
+      const cIdx = candidates.findIndex(c => c.id === candidateId);
+      const form = e.target;
+      const status = form.status.value;
+
+      const selected = form.assignedTests ? Array.from(form.assignedTests.selectedOptions).map(o => Number(o.value)) : [];
+      candidates[cIdx].status = status;
+      if (status === 'Проходит обучение') candidates[cIdx].assignedTests = selected;
+
+      if (status === 'Принят на работу') {
+        if (!employees.some(emp => emp.userId === candidates[cIdx].userId)) {
+          employees.push({
+            id: uid(),
+            userId: candidates[cIdx].userId,
+            fullName: candidates[cIdx].fullName,
+            position: candidates[cIdx].desiredPosition || 'Сотрудник',
+            hireDate: new Date().toISOString()
+          });
+          const uIdx = users.findIndex(u => u.id === candidates[cIdx].userId);
+          if (uIdx > -1) users[uIdx].role = 'employee';
+          setData(KEYS.users, users);
+          setData(KEYS.employees, employees);
+        }
+      }
+
+      setData(KEYS.candidates, candidates);
+      closeModal(); renderApp();
+    }
+    window.updateCandidateStatus = updateCandidateStatus;
+
+    function renderHrStats(container) {
+      const candidates = getData(KEYS.candidates);
+      const employees = getData(KEYS.employees);
+      const tests = getData(KEYS.tests);
+      const results = getData(KEYS.testResults);
+
+      const byStatus = CANDIDATE_STATUSES.map(s => ({ status: s, count: candidates.filter(c => c.status === s).length }));
+      const candidateIds = candidates.map(c => c.userId);
+      const candidateResults = results.filter(r => candidateIds.includes(r.userId));
+      const avg = candidateResults.length ? (candidateResults.reduce((a,b)=>a+b.score,0)/candidateResults.length).toFixed(1) : 0;
+
+      container.innerHTML = `
+        <div class="grid grid-3">
+          ${byStatus.map(item => `<div class="card"><h4>${item.status}</h4><p style="font-size:24px;font-weight:700;">${item.count}</p></div>`).join('')}
+        </div>
+        <div class="card" style="margin-top:12px;">
+          <h3>Средний балл кандидатов</h3>
+          <p style="font-size:28px;font-weight:700;">${avg}%</p>
+        </div>
+        <div class="card" style="margin-top:12px;">
+          <h3>Сотрудники и число пройденных тестов</h3>
+          <table>
+            <thead><tr><th>ФИО</th><th>Должность</th><th>Тестов пройдено</th></tr></thead>
+            <tbody>
+              ${employees.map(e => `
+                <tr>
+                  <td>${escapeHtml(e.fullName || '-')}</td>
+                  <td>${escapeHtml(e.position || '-')}</td>
+                  <td>${results.filter(r => r.userId === e.userId && tests.some(t => t.id === r.testId && t.category === 'employee')).length}</td>
+                </tr>
+              `).join('') || '<tr><td colspan="3">Нет сотрудников</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderHrTests(container) {
+      const tests = getData(KEYS.tests);
+      container.innerHTML = `
+        <div class="grid grid-2">
+          <div class="card">
+            <h3>Создание теста</h3>
+            <form id="createTestForm" onsubmit="saveTest(event)">
+              <div class="form-group"><label>Название</label><input name="title" required /></div>
+              <div class="form-group"><label>Описание</label><textarea name="description" required></textarea></div>
+              <div class="form-group"><label>Категория</label>
+                <select name="category"><option value="candidate">Кандидаты</option><option value="employee">Сотрудники</option></select>
+              </div>
+              <div id="questionsBuilder"></div>
+              <button type="button" class="btn-outline" onclick="addQuestionBlock()">+ Добавить вопрос</button>
+              <button type="submit">Сохранить тест</button>
+            </form>
+          </div>
+          <div class="card">
+            <h3>Список тестов</h3>
+            ${tests.map(t => `
+              <div class="question-item">
+                <strong>${escapeHtml(t.title)}</strong>
+                <p>${escapeHtml(t.description)}</p>
+                <p class="muted">Категория: ${t.category === 'candidate' ? 'кандидаты' : 'сотрудники'} | Вопросов: ${t.questions.length}</p>
+                <div class="actions">
+                  <button class="btn-outline" onclick="editTest(${t.id})">Редактировать</button>
+                  <button class="btn-danger" onclick="deleteTest(${t.id})">Удалить</button>
+                </div>
+              </div>
+            `).join('') || '<p>Нет тестов</p>'}
+          </div>
+        </div>
+      `;
+      if (!document.querySelector('#questionsBuilder .question-item')) addQuestionBlock();
+    }
+
+    function addQuestionBlock(q = null) {
+      const root = document.getElementById('questionsBuilder');
+      if (!root) return;
+      const el = document.createElement('div');
+      el.className = 'question-item';
+      el.innerHTML = `
+        <div class="form-group"><label>Текст вопроса</label><input name="q_text" value="${escapeHtml(q?.text || '')}" required /></div>
+        <div class="form-group"><label>Тип</label>
+          <select name="q_type" onchange="this.closest('.question-item').querySelector('.optionsBox').classList.toggle('hidden', this.value==='text')">
+            <option value="single" ${q?.type==='single'?'selected':''}>Одиночный выбор</option>
+            <option value="multi" ${q?.type==='multi'?'selected':''}>Множественный выбор</option>
+            <option value="text" ${q?.type==='text'?'selected':''}>Текстовый ответ</option>
+          </select>
+        </div>
+        <div class="form-group optionsBox ${q?.type==='text'?'hidden':''}"><label>Варианты (через ;)</label><input name="q_options" value="${escapeHtml((q?.options || []).join('; '))}" /></div>
+        <div class="form-group"><label>Правильный ответ (для multi через ;, для text ключевое слово)</label><input name="q_correct" value="${escapeHtml(Array.isArray(q?.correct)?q.correct.join('; '):(q?.correct || q?.keyword || ''))}" required /></div>
+        <button type="button" class="btn-danger" onclick="this.closest('.question-item').remove()">Удалить вопрос</button>
+      `;
+      root.appendChild(el);
+    }
+    window.addQuestionBlock = addQuestionBlock;
+
+    function saveTest(e, editId = null) {
+      e.preventDefault();
+      const form = e.target;
+      const title = form.title.value.trim();
+      const description = form.description.value.trim();
+      const category = form.category.value;
+      if (!title || !description) return alert('Заполните поля теста');
+
+      const questionEls = Array.from(form.querySelectorAll('.question-item'));
+      if (!questionEls.length) return alert('Добавьте хотя бы один вопрос');
+
+      const questions = questionEls.map(box => {
+        const text = box.querySelector('[name="q_text"]').value.trim();
+        const type = box.querySelector('[name="q_type"]').value;
+        const optionsRaw = box.querySelector('[name="q_options"]').value;
+        const correctRaw = box.querySelector('[name="q_correct"]').value;
+        const options = optionsRaw.split(';').map(v => v.trim()).filter(Boolean);
+        if (!text || !correctRaw.trim()) throw new Error('Заполните все вопросы');
+        if (type === 'text') return { text, type, keyword: correctRaw.trim().toLowerCase() };
+        if (type === 'multi') return { text, type, options, correct: correctRaw.split(';').map(v=>v.trim()).filter(Boolean) };
+        return { text, type, options, correct: correctRaw.trim() };
+      });
+
+      const tests = getData(KEYS.tests);
+      if (editId) {
+        const idx = tests.findIndex(t => t.id === editId);
+        tests[idx] = { ...tests[idx], title, description, category, questions };
+      } else {
+        tests.push({ id: uid(), title, description, category, questions });
+      }
+      setData(KEYS.tests, tests);
+      closeModal(); renderApp();
+    }
+    window.saveTest = saveTest;
+
+    function editTest(id) {
+      const t = getData(KEYS.tests).find(x => x.id === id);
+      openModal('Редактирование теста', `
+        <form id="editTestForm" onsubmit="saveTest(event, ${id})">
+          <div class="form-group"><label>Название</label><input name="title" value="${escapeHtml(t.title)}" required /></div>
+          <div class="form-group"><label>Описание</label><textarea name="description" required>${escapeHtml(t.description)}</textarea></div>
+          <div class="form-group"><label>Категория</label>
+            <select name="category"><option value="candidate" ${t.category==='candidate'?'selected':''}>Кандидаты</option><option value="employee" ${t.category==='employee'?'selected':''}>Сотрудники</option></select>
+          </div>
+          <div id="questionsBuilder"></div>
+          <button type="button" class="btn-outline" onclick="addQuestionBlock()">+ Добавить вопрос</button>
+          <button type="submit">Сохранить</button>
+        </form>
+      `);
+      t.questions.forEach(q => addQuestionBlock(q));
+    }
+    window.editTest = editTest;
+
+    function deleteTest(id) {
+      if (!confirm('Удалить тест?')) return;
+      setData(KEYS.tests, getData(KEYS.tests).filter(t => t.id !== id));
+      renderApp();
+    }
+    window.deleteTest = deleteTest;
+
+    function renderHrEmployees(container) {
+      const employees = getData(KEYS.employees);
+      const users = getData(KEYS.users);
+      container.innerHTML = `
+        <div class="card">
+          <h3>Сотрудники</h3>
+          <table>
+            <thead><tr><th>ФИО</th><th>Должность</th><th>Дата приёма</th><th></th></tr></thead>
+            <tbody>
+              ${employees.map(e => `
+                <tr>
+                  <td>${escapeHtml(e.fullName || '-')}</td>
+                  <td>${escapeHtml(e.position || '-')}</td>
+                  <td>${formatDate(e.hireDate)}</td>
+                  <td><button class="btn-outline" onclick="openEmployeeProfile(${e.id})">Профиль</button></td>
+                </tr>
+              `).join('') || '<tr><td colspan="4">Нет сотрудников</td></tr>'}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function openEmployeeProfile(employeeId) {
+      const employee = getData(KEYS.employees).find(e => e.id === employeeId);
+      const user = getData(KEYS.users).find(u => u.id === employee.userId);
+      const tests = getData(KEYS.tests).filter(t => t.category === 'employee');
+      const results = getData(KEYS.testResults).filter(r => r.userId === employee.userId);
+      openModal(`Профиль сотрудника: ${employee.fullName || user.email}`, `
+        <p><strong>Email:</strong> ${escapeHtml(user.email)}</p>
+        <p><strong>Должность:</strong> ${escapeHtml(employee.position || '-')}</p>
+        <p><strong>Дата приёма:</strong> ${formatDate(employee.hireDate)}</p>
+        <h4>История тестов</h4>
+        <table>
+          <thead><tr><th>Тест</th><th>Баллы</th><th>Дата</th></tr></thead>
+          <tbody>
+            ${results.map(r => `<tr><td>${escapeHtml((getData(KEYS.tests).find(t=>t.id===r.testId)||{}).title || '—')}</td><td>${r.score}%</td><td>${formatDate(r.date)}</td></tr>`).join('') || '<tr><td colspan="3">Нет результатов</td></tr>'}
+          </tbody>
+        </table>
+        <form onsubmit="assignEmployeeTests(event, ${employee.id})">
+          <div class="form-group"><label>Назначить тесты повышения (имитация назначения)</label>
+            <select name="tests" multiple size="5">${tests.map(t => `<option value="${t.id}">${escapeHtml(t.title)}</option>`).join('')}</select>
+          </div>
+          <p class="muted">Для сотрудников доступны все тесты категории "сотрудники"; назначение фиксируется в профиле сотрудника.</p>
+          <button type="submit">Назначить</button>
+        </form>
+      `);
+    }
+    window.openEmployeeProfile = openEmployeeProfile;
+
+    function assignEmployeeTests(e, employeeId) {
+      e.preventDefault();
+      const employees = getData(KEYS.employees);
+      const idx = employees.findIndex(x => x.id === employeeId);
+      const chosen = Array.from(e.target.tests.selectedOptions).map(o => Number(o.value));
+      employees[idx].assignedTests = chosen;
+      setData(KEYS.employees, employees);
+      alert('Тесты назначены');
+      closeModal();
+    }
+    window.assignEmployeeTests = assignEmployeeTests;
+
+    function renderHrSettings(container) {
+      const u = getCurrentUser();
+      container.innerHTML = `
+        <div class="card">
+          <h3>Настройки</h3>
+          <p>Email: <strong>${escapeHtml(u.email)}</strong></p>
+          <p>Роль: <strong>${u.role}</strong></p>
+          <button class="btn-danger" onclick="resetAllData()">Сбросить все данные</button>
+        </div>
+      `;
+    }
+
+    function resetAllData() {
+      if (!confirm('Точно очистить localStorage?')) return;
+      localStorage.clear();
+      initData();
+      logout();
+    }
+    window.resetAllData = resetAllData;
+
+    function renderCandidateTab(container, idx) {
+      switch (idx) {
+        case 0: return renderCandidateResume(container);
+        case 1: return renderCandidateTesting(container);
+        case 2: return renderCompanyInfo(container);
+        default: return renderCourses(container);
+      }
+    }
+
+    function renderCandidateResume(container) {
+      const user = getCurrentUser();
+      const c = getData(KEYS.candidates).find(x => x.userId === user.id);
+      const locked = c.status !== 'Не принят' && c.status !== 'В рассмотрении';
+      container.innerHTML = `
+        <div class="card">
+          <h3>Моё резюме</h3>
+          <p>Текущий статус: <span class="status-pill">${escapeHtml(c.status)}</span></p>
+          <form onsubmit="saveMyResume(event)" ${locked ? 'style="opacity:.75;"' : ''}>
+            <div class="grid grid-2">
+              <div class="form-group"><label>ФИО</label><input name="fullName" value="${escapeHtml(c.fullName || '')}" ${locked?'disabled':''} required /></div>
+              <div class="form-group"><label>Контакты</label><input name="contacts" value="${escapeHtml(c.contacts || '')}" ${locked?'disabled':''} required /></div>
+            </div>
+            <div class="form-group"><label>Желаемая должность</label><input name="desiredPosition" value="${escapeHtml(c.desiredPosition || '')}" ${locked?'disabled':''} required /></div>
+            <div class="form-group"><label>Опыт работы</label><textarea name="experience" ${locked?'disabled':''} required>${escapeHtml(c.experience || '')}</textarea></div>
+            <div class="form-group"><label>Образование</label><textarea name="education" ${locked?'disabled':''} required>${escapeHtml(c.education || '')}</textarea></div>
+            <div class="form-group"><label>Ключевые навыки</label><textarea name="skills" ${locked?'disabled':''} required>${escapeHtml(c.skills || '')}</textarea></div>
+            <button type="submit" ${locked?'disabled':''}>Отправить резюме</button>
+          </form>
+          ${locked ? '<p class="muted">Редактирование заблокировано на текущем этапе.</p>' : ''}
+        </div>
+      `;
+    }
+
+    function saveMyResume(e) {
+      e.preventDefault();
+      const user = getCurrentUser();
+      const values = Object.fromEntries(new FormData(e.target).entries());
+      if (Object.values(values).some(v => !String(v).trim())) return alert('Заполните все поля');
+      const candidates = getData(KEYS.candidates);
+      const idx = candidates.findIndex(c => c.userId === user.id);
+      candidates[idx] = { ...candidates[idx], ...values, status: candidates[idx].status === 'Не принят' ? 'В рассмотрении' : candidates[idx].status };
+      setData(KEYS.candidates, candidates);
+      alert('Резюме сохранено');
+      renderApp();
+    }
+    window.saveMyResume = saveMyResume;
+
+    function renderCandidateTesting(container) {
+      const user = getCurrentUser();
+      const c = getData(KEYS.candidates).find(x => x.userId === user.id);
+      const tests = getData(KEYS.tests).filter(t => (c.assignedTests || []).includes(t.id));
+      const results = getData(KEYS.testResults).filter(r => r.userId === user.id);
+      container.innerHTML = `
+        <div class="grid grid-2">
+          <div class="card">
+            <h3>Назначенные тесты</h3>
+            ${tests.map(t => {
+              const done = results.some(r => r.testId === t.id);
+              return `<div class="question-item"><strong>${escapeHtml(t.title)}</strong><p>${escapeHtml(t.description)}</p>${done?'<p class="muted">Уже пройден</p>':`<button onclick="startTest(${t.id})">Пройти</button>`}</div>`;
+            }).join('') || '<p>Тесты пока не назначены.</p>'}
+          </div>
+          <div class="card">
+            <h3>История результатов</h3>
+            <table><thead><tr><th>Тест</th><th>Баллы</th><th>Дата</th></tr></thead>
+            <tbody>${results.map(r => `<tr><td>${escapeHtml((getData(KEYS.tests).find(t=>t.id===r.testId)||{}).title || '—')}</td><td>${r.score}%</td><td>${formatDate(r.date)}</td></tr>`).join('') || '<tr><td colspan="3">Нет результатов</td></tr>'}</tbody></table>
+          </div>
+        </div>
+      `;
+    }
+
+    function startTest(testId) {
+      const t = getData(KEYS.tests).find(x => x.id === testId);
+      openModal(`Прохождение теста: ${t.title}`, `
+        <form onsubmit="submitTest(event, ${testId})">
+          ${t.questions.map((q, i) => `
+            <div class="question-item">
+              <p><strong>${i+1}. ${escapeHtml(q.text)}</strong></p>
+              ${renderQuestionInput(q, i)}
+            </div>
+          `).join('')}
+          <button type="submit">Отправить ответы</button>
+        </form>
+      `);
+    }
+    window.startTest = startTest;
+
+    function renderQuestionInput(q, i) {
+      if (q.type === 'text') return `<input name="q_${i}" placeholder="Ваш ответ" required />`;
+      if (q.type === 'single') return q.options.map(op => `<label><input type="radio" name="q_${i}" value="${escapeHtml(op)}" required /> ${escapeHtml(op)}</label><br/>`).join('');
+      return q.options.map(op => `<label><input type="checkbox" name="q_${i}" value="${escapeHtml(op)}" /> ${escapeHtml(op)}</label><br/>`).join('');
+    }
+
+    function submitTest(e, testId) {
+      e.preventDefault();
+      const user = getCurrentUser();
+      const t = getData(KEYS.tests).find(x => x.id === testId);
+      const answers = {};
+      let correct = 0;
+
+      t.questions.forEach((q, i) => {
+        if (q.type === 'single' || q.type === 'text') {
+          const val = (e.target[`q_${i}`]?.value || '').trim();
+          answers[`q_${i}`] = val;
+          if (q.type === 'single' && val === q.correct) correct += 1;
+          if (q.type === 'text' && val.toLowerCase().includes((q.keyword || '').toLowerCase())) correct += 1;
+        } else {
+          const vals = Array.from(e.target.querySelectorAll(`input[name='q_${i}']:checked`)).map(x => x.value).sort();
+          answers[`q_${i}`] = vals;
+          const corr = (q.correct || []).slice().sort();
+          if (JSON.stringify(vals) === JSON.stringify(corr)) correct += 1;
+        }
+      });
+
+      const score = Math.round((correct / t.questions.length) * 100);
+      const results = getData(KEYS.testResults).filter(r => !(r.userId === user.id && r.testId === testId));
+      results.push({ id: uid(), userId: user.id, testId, score, answers, date: new Date().toISOString() });
+      setData(KEYS.testResults, results);
+      alert(`Тест завершён. Результат: ${score}%`);
+      closeModal(); renderApp();
+    }
+    window.submitTest = submitTest;
+
+    function renderCompanyInfo(container) {
+      container.innerHTML = `
+        <div class="card">
+          <h3>О компании</h3>
+          <p>Мы создаём цифровые продукты и развиваем таланты сотрудников.</p>
+          <p><strong>Миссия:</strong> строить удобные и полезные сервисы.</p>
+          <p><strong>Контакты:</strong> info@company.com, +7 800 000-00-00</p>
+          <img alt="Команда" src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200" style="max-width:100%;border-radius:10px;" />
+        </div>
+      `;
+    }
+
+    function renderCourses(container) {
+      const courses = [
+        { title: 'Основы коммуникации', link: '#', description: 'Статья о взаимодействии в команде.' },
+        { title: 'Введение в Agile', link: '#', description: 'Видео о гибких практиках.' },
+        { title: 'Frontend best practices', link: '#', description: 'Подборка материалов по UI-разработке.' }
+      ];
+      container.innerHTML = `
+        <div class="card">
+          <h3>Курсы</h3>
+          <div class="grid">
+            ${courses.map(c => `<div class="question-item"><strong>${c.title}</strong><p>${c.description}</p><a href="${c.link}" target="_blank">Открыть материал</a></div>`).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderEmployeeTab(container, idx) {
+      switch (idx) {
+        case 0: return renderEmployeeCabinet(container);
+        case 1: return renderEmployeeTests(container);
+        default: return renderEmployeeResults(container);
+      }
+    }
+
+    function renderEmployeeCabinet(container) {
+      const user = getCurrentUser();
+      const employee = getData(KEYS.employees).find(e => e.userId === user.id) || { fullName:'', position:'', hireDate:new Date().toISOString() };
+      const results = getData(KEYS.testResults).filter(r => r.userId === user.id);
+      container.innerHTML = `
+        <div class="card">
+          <h3>Личный кабинет</h3>
+          <p><strong>ФИО:</strong> ${escapeHtml(employee.fullName || 'Не заполнено')}</p>
+          <p><strong>Должность:</strong> ${escapeHtml(employee.position || 'Не указана')}</p>
+          <p><strong>Дата приёма:</strong> ${formatDate(employee.hireDate)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(user.email)}</p>
+        </div>
+        <div class="card" style="margin-top:12px;">
+          <h3>История пройденных тестов</h3>
+          <table><thead><tr><th>Тест</th><th>Баллы</th><th>Дата</th></tr></thead><tbody>
+            ${results.map(r => `<tr><td>${escapeHtml((getData(KEYS.tests).find(t=>t.id===r.testId)||{}).title || '—')}</td><td>${r.score}%</td><td>${formatDate(r.date)}</td></tr>`).join('') || '<tr><td colspan="3">Нет результатов</td></tr>'}
+          </tbody></table>
+        </div>
+      `;
+    }
+
+    function renderEmployeeTests(container) {
+      const user = getCurrentUser();
+      const employee = getData(KEYS.employees).find(e => e.userId === user.id) || {};
+      const tests = getData(KEYS.tests).filter(t => t.category === 'employee');
+      const assigned = employee.assignedTests || tests.map(t => t.id);
+      const available = tests.filter(t => assigned.includes(t.id));
+      const results = getData(KEYS.testResults).filter(r => r.userId === user.id);
+
+      container.innerHTML = `
+        <div class="card">
+          <h3>Тесты повышения квалификации</h3>
+          ${available.map(t => {
+            const done = results.some(r => r.testId === t.id);
+            return `<div class="question-item"><strong>${escapeHtml(t.title)}</strong><p>${escapeHtml(t.description)}</p>${done?'<p class="muted">Пройден</p>':`<button onclick="startTest(${t.id})">Пройти</button>`}</div>`;
+          }).join('') || '<p>Нет доступных тестов.</p>'}
+        </div>
+      `;
+    }
+
+    function renderEmployeeResults(container) {
+      const user = getCurrentUser();
+      const results = getData(KEYS.testResults).filter(r => r.userId === user.id);
+      container.innerHTML = `
+        <div class="card">
+          <div class="actions" style="justify-content: space-between; align-items: center;">
+            <h3>Результаты</h3>
+            <button class="btn-outline" onclick="alert('Сертификат сформирован (имитация)')">Скачать сертификат</button>
+          </div>
+          <table>
+            <thead><tr><th>Тест</th><th>Дата</th><th>Баллы</th></tr></thead>
+            <tbody>${results.map(r => `<tr><td>${escapeHtml((getData(KEYS.tests).find(t=>t.id===r.testId)||{}).title || '—')}</td><td>${formatDate(r.date)}</td><td>${r.score}%</td></tr>`).join('') || '<tr><td colspan="3">Пока пусто</td></tr>'}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      login(document.getElementById('loginEmail').value.trim(), document.getElementById('loginPassword').value);
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      register(document.getElementById('regEmail').value.trim(), document.getElementById('regPassword').value, document.getElementById('regRole').value);
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', logout);
+
+    initData();
+    renderApp();
+  </script>
+</body>
+</html>
