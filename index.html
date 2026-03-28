@@ -18,6 +18,29 @@
       --warning: #f59e0b;
       --line: #23263D;
       --radius: 12px;
+      --bg-grad-1: #132640;
+      --bg-grad-2: #0A0A0F;
+      --card-glow: rgba(0, 163, 255, 0.22);
+      --card-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+      --topbar-blur: rgba(18, 19, 32, 0.78);
+      --avatar-ring: rgba(0, 163, 255, 0.3);
+    }
+
+    body[data-theme="light"] {
+      --bg: #F4F8FF;
+      --panel: #FFFFFF;
+      --panel-soft: #EEF4FF;
+      --text: #18253E;
+      --muted: #50607C;
+      --neon: #1B6BFF;
+      --neon-soft: rgba(27, 107, 255, 0.18);
+      --line: #D8E4FF;
+      --bg-grad-1: #DCEBFF;
+      --bg-grad-2: #F4F8FF;
+      --card-glow: rgba(27, 107, 255, 0.14);
+      --card-shadow: 0 12px 34px rgba(24, 37, 62, 0.1);
+      --topbar-blur: rgba(255, 255, 255, 0.84);
+      --avatar-ring: rgba(27, 107, 255, 0.35);
     }
 
     * { box-sizing: border-box; }
@@ -25,9 +48,40 @@
     body {
       margin: 0;
       font-family: Inter, Segoe UI, Arial, sans-serif;
-      background: radial-gradient(circle at top right, #132640 0%, var(--bg) 45%);
+      background: radial-gradient(circle at top right, var(--bg-grad-1) 0%, var(--bg-grad-2) 45%);
       color: var(--text);
       min-height: 100vh;
+      transition: background .35s ease, color .25s ease;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before, body::after {
+      content: '';
+      position: fixed;
+      pointer-events: none;
+      z-index: -1;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      filter: blur(10px);
+      animation: floatGlow 12s ease-in-out infinite;
+    }
+    body::before {
+      top: -120px;
+      right: -80px;
+      background: radial-gradient(circle, rgba(0, 163, 255, .2) 0%, transparent 70%);
+    }
+    body::after {
+      bottom: -140px;
+      left: -90px;
+      background: radial-gradient(circle, rgba(82, 76, 255, .2) 0%, transparent 70%);
+      animation-delay: -5s;
+    }
+
+    @keyframes floatGlow {
+      0%,100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-16px) scale(1.06); }
     }
 
     .hidden { display: none !important; }
@@ -102,6 +156,12 @@
       border: 1px solid var(--line);
       border-radius: var(--radius);
       padding: 12px;
+      position: sticky;
+      top: 10px;
+      z-index: 4;
+      backdrop-filter: blur(12px);
+      background: var(--topbar-blur);
+      box-shadow: var(--card-shadow);
     }
     .topbar .badge {
       display: inline-block;
@@ -126,6 +186,11 @@
       border-radius: var(--radius);
       padding: 12px;
       overflow: auto;
+      box-shadow: var(--card-shadow);
+      transition: transform .2s ease, box-shadow .25s ease, border-color .2s ease;
+    }
+    .panel:hover {
+      border-color: rgba(110, 157, 255, .4);
     }
     .menu-item {
       display: block;
@@ -148,8 +213,61 @@
       margin-bottom: 8px;
       background: var(--panel-soft);
       cursor: pointer;
+      transition: transform .2s ease, box-shadow .25s ease, border-color .2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .detail-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 40%, rgba(255,255,255,.12) 48%, transparent 56%);
+      transform: translateX(-115%);
+      transition: transform .8s ease;
+      pointer-events: none;
+    }
+    .detail-card:hover::after { transform: translateX(115%); }
+    .detail-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 0 1px var(--card-glow), 0 12px 25px rgba(0, 0, 0, 0.22);
+      border-color: color-mix(in srgb, var(--neon), #fff 20%);
     }
     .detail-card.active { border-color: var(--neon); }
+
+    .theme-toggle {
+      min-width: 170px;
+      background: linear-gradient(90deg, #4b4ff9, var(--neon));
+    }
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--avatar-ring);
+      box-shadow: 0 0 0 4px rgba(126, 188, 255, .08);
+      background: #d9e7ff;
+    }
+    .profile-hero {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: linear-gradient(135deg, color-mix(in srgb, var(--panel-soft), #fff 10%), var(--panel));
+      margin-bottom: 10px;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .meta-item {
+      background: var(--panel-soft);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px;
+    }
 
     table { width: 100%; border-collapse: collapse; }
     th, td { border-bottom: 1px solid var(--line); padding: 8px; font-size: 14px; text-align: left; }
@@ -224,6 +342,7 @@
       #hrMenu .menu-item { min-width: 140px; }
       .mobile-tabs-select { display: block; margin-bottom: 8px; }
       .tabs.collapse-mobile { display: none; }
+      .meta-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -279,7 +398,7 @@
 
   <script>
     const KEYS = {
-      users: 'users', candidates: 'candidates', employees: 'employees', vacancies: 'vacancies', tests: 'tests', testResults: 'testResults', session: 'currentUser'
+      users: 'users', candidates: 'candidates', employees: 'employees', vacancies: 'vacancies', tests: 'tests', testResults: 'testResults', session: 'currentUser', theme: 'theme'
     };
 
     const CANDIDATE_STATUSES = ['Новый', 'В рассмотрении', 'Собеседование', 'Тест назначен', 'Оффер', 'Принят на работу', 'Отказ'];
@@ -301,6 +420,12 @@
     const setData = (k, v) => localStorage.setItem(k, JSON.stringify(v));
     const getSession = () => JSON.parse(localStorage.getItem(KEYS.session) || 'null');
     const setSession = v => localStorage.setItem(KEYS.session, JSON.stringify(v));
+    const getTheme = () => localStorage.getItem(KEYS.theme) || 'dark';
+    const setTheme = v => localStorage.setItem(KEYS.theme, v);
+
+    function applyTheme(theme = getTheme()) {
+      document.body.setAttribute('data-theme', theme);
+    }
 
     function initDemoData() {
       if (localStorage.getItem(KEYS.users)) return;
@@ -329,21 +454,29 @@
         {
           id: uid(), userId: cUsers[0].id, fullName: 'Алексей Смирнов', contacts: 'alex.smirnov@demo.com', desiredPosition: 'Frontend Engineer', status: 'В рассмотрении',
           experience: '2 года', education: 'СПбПУ, информатика', sourcing: 'LinkedIn', specialty: 'Web', skills: ['JavaScript', 'React'], educations: ['СПбПУ 2018-2022'], workPlaces: ['SoftByte (Junior Frontend)'],
+          city: 'Санкт-Петербург', portfolio: 'https://github.com/alex-smirnov-dev', about: 'Увлекаюсь интерактивными интерфейсами и web-анимациями.',
+          photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80',
           vacancyId: vacancies[0].id, assignedTests: [], createdAt: now(), updatedAt: now(), lockResume: true
         },
         {
           id: uid(), userId: cUsers[1].id, fullName: 'Анна Кузнецова', contacts: 'anna.kuznetsova@demo.com', desiredPosition: 'Backend Engineer', status: 'Тест назначен',
           experience: '3 года', education: 'ИТМО', sourcing: 'hh.ru', specialty: 'Backend', skills: ['Node.js', 'SQL'], educations: ['ИТМО 2017-2021'], workPlaces: ['CodeRiver (Backend Dev)'],
+          city: 'Казань', portfolio: 'https://github.com/anna-kuznetsova', about: 'Люблю проектировать API и оптимизировать запросы.',
+          photo: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=300&q=80',
           vacancyId: vacancies[1].id, assignedTests: [], createdAt: now(), updatedAt: now(), lockResume: true
         },
         {
           id: uid(), userId: cUsers[2].id, fullName: 'Дмитрий Попов', contacts: 'dmitry.popov@demo.com', desiredPosition: 'HR Generalist', status: 'Новый',
           experience: '1.5 года', education: 'РАНХиГС', sourcing: 'Referral', specialty: 'HR', skills: ['Рекрутинг', 'Оценка'], educations: ['РАНХиГС 2016-2020'], workPlaces: ['PeopleDrive (Recruiter)'],
+          city: 'Москва', portfolio: 'https://linkedin.com/in/dmitry-popov-hr', about: 'Фокус на адаптации и оценке навыков.',
+          photo: 'https://images.unsplash.com/photo-1544723795-3fb6469f5b39?auto=format&fit=crop&w=300&q=80',
           vacancyId: vacancies[2].id, assignedTests: [], createdAt: now(), updatedAt: now(), lockResume: false
         },
         {
           id: uid(), userId: null, fullName: 'Елена Морозова', contacts: 'elena.m@mail.com', desiredPosition: 'Frontend Engineer', status: 'Собеседование',
           experience: '4 года', education: 'МФТИ', sourcing: 'Telegram', specialty: 'Frontend', skills: ['Vue', 'TypeScript'], educations: ['МФТИ 2014-2018'], workPlaces: ['BrightApps'],
+          city: 'Новосибирск', portfolio: 'https://dribbble.com/elenam', about: 'Делаю красивые и удобные UX-сценарии.',
+          photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80',
           vacancyId: vacancies[0].id, assignedTests: [], createdAt: now(), updatedAt: now(), lockResume: true
         }
       ]);
@@ -405,7 +538,7 @@
       setData(KEYS.users, users);
       if (role === 'candidate') {
         const arr = getData(KEYS.candidates);
-        arr.push({ id: uid(), userId: user.id, fullName: '', contacts: email, desiredPosition: '', status: 'Новый', experience: '', education: '', skills: [], educations: [], workPlaces: [], sourcing: '', specialty: '', vacancyId: null, assignedTests: [], createdAt: now(), updatedAt: now(), lockResume: false });
+        arr.push({ id: uid(), userId: user.id, fullName: '', contacts: email, desiredPosition: '', status: 'Новый', experience: '', education: '', skills: [], educations: [], workPlaces: [], sourcing: '', specialty: '', city: '', portfolio: '', about: '', photo: '', vacancyId: null, assignedTests: [], createdAt: now(), updatedAt: now(), lockResume: false });
         setData(KEYS.candidates, arr);
       } else {
         const arr = getData(KEYS.employees);
@@ -440,16 +573,28 @@
     }
 
     function renderTopbar(user, subtitle) {
+      const currentTheme = getTheme();
       return `
         <div class="topbar">
           <div>
             <h3>TechStar Portal</h3>
             <p>${esc(user.email)} · <span class="badge">${esc(user.role)}</span> · ${esc(subtitle)}</p>
           </div>
-          <button class="btn-danger" onclick="logout()">Выход</button>
+          <div class="actions">
+            <button class="theme-toggle" onclick="toggleTheme()">${currentTheme === 'dark' ? '☀️ Светлая тема' : '🌙 Тёмная тема'}</button>
+            <button class="btn-danger" onclick="logout()">Выход</button>
+          </div>
         </div>
       `;
     }
+
+    function toggleTheme() {
+      const next = getTheme() === 'dark' ? 'light' : 'dark';
+      setTheme(next);
+      applyTheme(next);
+      render();
+    }
+    window.toggleTheme = toggleTheme;
 
     /* HR */
     function renderHr(user) {
@@ -595,7 +740,17 @@
             ${CANDIDATE_STATUSES.map(s => `<option value="${s}" ${s===statusFilter?'selected':''}>${s}</option>`).join('')}
           </select>
         </div>
-        ${rows.map(c => `<div class="detail-card ${ui.hrSelected===c.id?'active':''}" onclick="selectHrItem(${c.id})"><strong>${esc(c.fullName || 'Без имени')}</strong><p>${esc(c.desiredPosition || '-')} · <span class="pill">${esc(c.status)}</span></p></div>`).join('') || '<p>Нет кандидатов.</p>'}
+        ${rows.map(c => `
+          <div class="detail-card ${ui.hrSelected===c.id?'active':''}" onclick="selectHrItem(${c.id})">
+            <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;">
+              <div>
+                <strong>${esc(c.fullName || 'Без имени')}</strong>
+                <p>${esc(c.desiredPosition || '-')} · <span class="pill">${esc(c.status)}</span></p>
+              </div>
+              <button class="btn-outline" onclick="openCandidateProfile(${c.id}); event.stopPropagation();">Анкета</button>
+            </div>
+          </div>
+        `).join('') || '<p>Нет кандидатов.</p>'}
       `;
     }
 
@@ -608,7 +763,18 @@
         <h4>${esc(c.fullName || 'Кандидат')}</h4>
         <p>Создан: ${formatDate(c.createdAt)} · Обновлён: ${formatDate(c.updatedAt)}</p>
         <form onsubmit="saveCandidateDetail(event, ${c.id})">
+          <div class="form-group"><label>Фото (URL)</label><input name="photo" value="${esc(c.photo||'')}" placeholder="https://..."></div>
+          <div class="grid grid-2">
+            <div class="form-group"><label>ФИО</label><input name="fullName" value="${esc(c.fullName||'')}"></div>
+            <div class="form-group"><label>Контакты</label><input name="contacts" value="${esc(c.contacts||'')}"></div>
+          </div>
+          <div class="form-group"><label>Желаемая должность</label><input name="desiredPosition" value="${esc(c.desiredPosition||'')}"></div>
           <div class="form-group"><label>Статус</label><select name="status">${CANDIDATE_STATUSES.map(s => `<option ${s===c.status?'selected':''}>${s}</option>`).join('')}</select></div>
+          <div class="grid grid-2">
+            <div class="form-group"><label>Город</label><input name="city" value="${esc(c.city||'')}"></div>
+            <div class="form-group"><label>Портфолио / LinkedIn</label><input name="portfolio" value="${esc(c.portfolio||'')}"></div>
+          </div>
+          <div class="form-group"><label>О себе</label><textarea name="about">${esc(c.about||'')}</textarea></div>
           <div class="form-group"><label>Стаж</label><input name="experience" value="${esc(c.experience||'')}"></div>
           <div class="form-group"><label>Образование</label><input name="education" value="${esc(c.education||'')}"></div>
           <div class="form-group"><label>Направление подбора</label><input name="sourcing" value="${esc(c.sourcing||'')}"></div>
@@ -620,6 +786,7 @@
           <div class="form-group"><label>Назначить тестирование</label><select name="assignedTests" multiple size="4">${tests.map(t => `<option value="${t.id}" ${(c.assignedTests||[]).includes(t.id)?'selected':''}>${esc(t.title)}</option>`).join('')}</select></div>
           <div class="actions">
             <button type="submit">Сохранить</button>
+            <button type="button" class="btn-outline" onclick="openCandidateProfile(${c.id})">Открыть анкету</button>
             <button type="button" class="btn-success" onclick="hireCandidate(${c.id})">Принять на работу</button>
           </div>
         </form>
@@ -633,6 +800,7 @@
       const vacancies = getData(KEYS.vacancies);
       openModal('Добавить кандидата', `
         <form onsubmit="createCandidate(event)">
+          <div class="form-group"><label>Фото (URL)</label><input name="photo" placeholder="https://..."></div>
           <div class="grid grid-2">
             <div class="form-group"><label>ФИО</label><input name="fullName" required></div>
             <div class="form-group"><label>Контакты</label><input name="contacts" required></div>
@@ -641,6 +809,11 @@
             <div class="form-group"><label>Желаемая должность</label><input name="desiredPosition" required></div>
             <div class="form-group"><label>Вакансия</label><select name="vacancyId"><option value="">Не выбрана</option>${vacancies.map(v => `<option value="${v.id}">${esc(v.title)}</option>`).join('')}</select></div>
           </div>
+          <div class="grid grid-2">
+            <div class="form-group"><label>Город</label><input name="city"></div>
+            <div class="form-group"><label>Портфолио</label><input name="portfolio"></div>
+          </div>
+          <div class="form-group"><label>О себе</label><textarea name="about"></textarea></div>
           <button type="submit">Сохранить</button>
         </form>
       `);
@@ -650,7 +823,7 @@
       e.preventDefault();
       const fd = Object.fromEntries(new FormData(e.target).entries());
       const arr = getData(KEYS.candidates);
-      arr.push({ id: uid(), userId: null, fullName: fd.fullName, contacts: fd.contacts, desiredPosition: fd.desiredPosition, status: 'Новый', experience: '', education: '', skills: [], educations: [], workPlaces: [], sourcing: '', specialty: '', vacancyId: Number(fd.vacancyId) || null, assignedTests: [], createdAt: now(), updatedAt: now(), lockResume: true });
+      arr.push({ id: uid(), userId: null, fullName: fd.fullName, contacts: fd.contacts, desiredPosition: fd.desiredPosition, status: 'Новый', experience: '', education: '', skills: [], educations: [], workPlaces: [], sourcing: '', specialty: '', city: fd.city || '', portfolio: fd.portfolio || '', about: fd.about || '', photo: fd.photo || '', vacancyId: Number(fd.vacancyId) || null, assignedTests: [], createdAt: now(), updatedAt: now(), lockResume: true });
       setData(KEYS.candidates, arr);
       closeModal();
       render();
@@ -664,7 +837,14 @@
       const f = e.target;
       arr[idx] = {
         ...arr[idx],
+        photo: f.photo.value,
+        fullName: f.fullName.value,
+        contacts: f.contacts.value,
+        desiredPosition: f.desiredPosition.value,
         status: f.status.value,
+        city: f.city.value,
+        portfolio: f.portfolio.value,
+        about: f.about.value,
         experience: f.experience.value,
         education: f.education.value,
         sourcing: f.sourcing.value,
@@ -713,10 +893,48 @@
       render();
     }
 
+    function candidateProfileHtml(candidate) {
+      const vacancy = getData(KEYS.vacancies).find(v => v.id === candidate.vacancyId);
+      return `
+        <div class="profile-hero">
+          <img class="avatar" src="${esc(candidate.photo || 'https://via.placeholder.com/140x140?text=No+Photo')}" alt="Фото кандидата">
+          <div>
+            <h3>${esc(candidate.fullName || 'Кандидат')}</h3>
+            <p>${esc(candidate.desiredPosition || 'Позиция не указана')} · <span class="pill">${esc(candidate.status || '—')}</span></p>
+            <p>${esc(candidate.contacts || 'Контакты не указаны')}</p>
+          </div>
+        </div>
+        <div class="meta-grid">
+          <div class="meta-item"><strong>Город</strong><p>${esc(candidate.city || 'Не указан')}</p></div>
+          <div class="meta-item"><strong>Стаж</strong><p>${esc(candidate.experience || 'Не указан')}</p></div>
+          <div class="meta-item"><strong>Вакансия</strong><p>${esc(vacancy?.title || 'Не назначена')}</p></div>
+          <div class="meta-item"><strong>Источник</strong><p>${esc(candidate.sourcing || 'Не указан')}</p></div>
+        </div>
+        <div class="meta-item" style="margin-top:8px;"><strong>О себе</strong><p>${esc(candidate.about || 'Не заполнено')}</p></div>
+        <div class="meta-item" style="margin-top:8px;"><strong>Портфолио</strong><p>${candidate.portfolio ? `<a href="${esc(candidate.portfolio)}" target="_blank" rel="noreferrer">${esc(candidate.portfolio)}</a>` : 'Не указано'}</p></div>
+        <div class="meta-item" style="margin-top:8px;"><strong>Образование</strong><p>${esc((candidate.educations || [candidate.education]).filter(Boolean).join(', ') || 'Не заполнено')}</p></div>
+        <div class="meta-item" style="margin-top:8px;"><strong>Навыки</strong><p>${esc((candidate.skills || []).join(', ') || 'Не указаны')}</p></div>
+        <div class="meta-item" style="margin-top:8px;"><strong>Опыт работы</strong><p>${esc((candidate.workPlaces || []).join(', ') || 'Не заполнено')}</p></div>
+      `;
+    }
+
+    function openCandidateProfile(candidateId) {
+      const candidate = getData(KEYS.candidates).find(c => c.id === candidateId);
+      if (!candidate) return alert('Анкета кандидата не найдена');
+      openModal(`Анкета: ${candidate.fullName || 'Кандидат'}`, candidateProfileHtml(candidate));
+    }
+
+    function openCandidateProfileByUser(userId) {
+      const candidate = getData(KEYS.candidates).find(c => c.userId === userId);
+      if (!candidate) return alert('Анкета не найдена');
+      openModal('Предпросмотр анкеты', candidateProfileHtml(candidate));
+    }
+
     window.openCandidateModal = openCandidateModal;
     window.createCandidate = createCandidate;
     window.saveCandidateDetail = saveCandidateDetail;
     window.hireCandidate = hireCandidate;
+    window.openCandidateProfile = openCandidateProfile;
 
     /* HR: stats */
     function hrStatsMain() {
@@ -935,16 +1153,32 @@
       return `
         <h3>Моё резюме</h3>
         <p>Статус: <span class="pill">${esc(c.status)}</span></p>
+        <div class="profile-hero">
+          <img class="avatar" src="${esc(c.photo || 'https://via.placeholder.com/140x140?text=Photo')}" alt="Фото кандидата">
+          <div>
+            <h4>${esc(c.fullName || 'Ваше имя')}</h4>
+            <p>${esc(c.desiredPosition || 'Желаемая должность')}</p>
+          </div>
+        </div>
         <form onsubmit="saveCandidateResume(event)" ${locked ? 'style="opacity:.75;"' : ''}>
+          <div class="form-group"><label>Фото (URL)</label><input name="photo" value="${esc(c.photo || '')}" ${locked?'disabled':''}></div>
           <div class="grid grid-2">
             <div class="form-group"><label>ФИО</label><input name="fullName" value="${esc(c.fullName || '')}" ${locked?'disabled':''} required></div>
             <div class="form-group"><label>Контакты</label><input name="contacts" value="${esc(c.contacts || '')}" ${locked?'disabled':''} required></div>
           </div>
           <div class="form-group"><label>Желаемая должность</label><input name="desiredPosition" value="${esc(c.desiredPosition || '')}" ${locked?'disabled':''} required></div>
+          <div class="grid grid-2">
+            <div class="form-group"><label>Город</label><input name="city" value="${esc(c.city || '')}" ${locked?'disabled':''}></div>
+            <div class="form-group"><label>Портфолио / LinkedIn</label><input name="portfolio" value="${esc(c.portfolio || '')}" ${locked?'disabled':''}></div>
+          </div>
+          <div class="form-group"><label>О себе</label><textarea name="about" ${locked?'disabled':''}>${esc(c.about || '')}</textarea></div>
           <div class="form-group"><label>Опыт</label><textarea name="experience" ${locked?'disabled':''}>${esc(c.experience || '')}</textarea></div>
           <div class="form-group"><label>Образование</label><textarea name="education" ${locked?'disabled':''}>${esc(c.education || '')}</textarea></div>
           <div class="form-group"><label>Навыки (через ;)</label><input name="skills" value="${esc((c.skills || []).join('; '))}" ${locked?'disabled':''}></div>
-          <button type="submit" ${locked?'disabled':''}>Отправить резюме</button>
+          <div class="actions">
+            <button type="submit" ${locked?'disabled':''}>Отправить резюме</button>
+            <button type="button" class="btn-outline" onclick="openCandidateProfileByUser(${user.id})">Открыть анкету</button>
+          </div>
         </form>
         ${locked ? '<p>Редактирование заблокировано после отправки или смены статуса HR.</p>' : ''}
       `;
@@ -960,6 +1194,10 @@
       arr[idx] = {
         ...arr[idx],
         ...fd,
+        photo: fd.photo,
+        city: fd.city,
+        portfolio: fd.portfolio,
+        about: fd.about,
         skills: fd.skills.split(';').map(s => s.trim()).filter(Boolean),
         updatedAt: now(),
         status: ['Новый'].includes(arr[idx].status) ? 'В рассмотрении' : arr[idx].status,
@@ -1153,6 +1391,11 @@
       register(document.getElementById('regEmail').value.trim(), document.getElementById('regPassword').value, document.getElementById('regRole').value);
     });
 
+    if (!localStorage.getItem(KEYS.theme)) {
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      setTheme(prefersLight ? 'light' : 'dark');
+    }
+    applyTheme();
     initDemoData();
     render();
   </script>
